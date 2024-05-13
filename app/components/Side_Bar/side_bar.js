@@ -6,7 +6,6 @@ export default function ModalContent({ onClose }) {
       <div className={Style.modal}>
         <div>I&apos;m a modal dialog</div>
         <button onClick={onClose}>Close</button>
-        {children}
       </div>
     );
   }
