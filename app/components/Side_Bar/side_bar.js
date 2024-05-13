@@ -1,4 +1,5 @@
-import Style from './sidebar.module.css'; // Import your sidebar styles
+import Style from "./sidebar.module.css"; 
+// Import sidebar styles
 
 export default function ModalContent({ onClose }) {
     return (
