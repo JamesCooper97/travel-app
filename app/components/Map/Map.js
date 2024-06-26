@@ -5,11 +5,8 @@ import * as countriesData from './countries_polygons.json';
 import * as L from 'leaflet';
 
 export default function Map({onCountryClick}){
-    //fix for "Map already instantiated"
-    if (isMapInitialized || mapContainerRef.current) {
-        return;
-    }
 
+    //fix for map already instantiated
     document.getElementById('weathermap').innerHTML = "<div id='map' style='width: 100%; height: 90vh; background-color:#fffffc;'></div>";
     
     const map = L.map('map').setView([30, 0], 2);
