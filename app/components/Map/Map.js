@@ -4,19 +4,38 @@ import * as countriesData from './countries_polygons.json';
 
 import * as L from 'leaflet';
 
-export default function Map(){
+export default function Map({onCountryClick}){
     //fix for "Map already instantiated"
+    if (isMapInitialized || mapContainerRef.current) {
+        return;
+    }
+
     document.getElementById('weathermap').innerHTML = "<div id='map' style='width: 100%; height: 90vh; background-color:#fffffc;'></div>";
+    
     const map = L.map('map').setView([30, 0], 2);
-    //const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
     console.log("Base Map Initialised");
-    //L.geoJson(countriesData).addTo(map);
 
-    var geojson;
-
-    geojson = L.geoJson(countriesData, {
+    const geojson = L.geoJson(countriesData, {
         style: style,
-        onEachFeature: onEachFeature
+        onEachFeature: (feature, layer) => {
+            layer.on('click', (e) => {
+              onCountryClick(feature.properties.NAME);
+              map.fitBounds(e.target.getBounds());
+            });
+            layer.on('mouseover', (e) => {
+                var country = e.target;
+                country.setStyle({
+                    weight: 3,
+                    color: '#666',
+                    dashArray: '',
+                    fillOpacity: 0.7
+                });
+                country.bringToFront();
+            });
+            layer.on('mouseout', (e) => {
+                geojson.resetStyle(e.target);
+            });
+          },
     }).addTo(map);
 
     function style(feature) {
